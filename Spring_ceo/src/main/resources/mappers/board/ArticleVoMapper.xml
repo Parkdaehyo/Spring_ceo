@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+       <mapper namespace="com.spring.mvc.board.repository.IArticleVoMapper">
+       
+       
+       <resultMap id="ArticleMap" type="com.spring.mvc.board.vo.ArticleVO">
+       
+       <id property="articleNO" column="articleNO"/>
+       <result property="level" column="level"/>
+       <result property="parentNO" column="parentNO"/>
+       <result property="title" column="title"/>
+       <result property="content" column="content"/>
+       <result property="imageFileName" column="imageFileName"/>
+       <result property="id" column="id"/>
+       <result property="writeDate" column="writedate"/>
+       
+       
+       </resultMap>
+   
+       
+       
+      <select id="a_getArticleList" resultMap="ArticleMap">
+      <![CDATA[
+      
+      SELECT LEVEL,
+   			articleNO,
+   		    parentNO,
+    		LPAD(' ',4*(LEVEL-1)) || title title,
+    		content,
+    		writeDate,
+    		id
+    		FROM t_board
+    		START WITH parentNO=0
+    		CONNECT BY PRIOR articleNO=parentNO
+    		ORDER SIBLINGS BY articleNO DESC
+      ]]> 
+      </select>
+      
+      <select id="memberList" resultType="com.spring.mvc.member.vo.memberVO">
+		<![CDATA[
+		select * from  t_member
+		
+  		]]> 
+		</select>      
+      
+      <!--  글쓰기 -->
+      <insert id="insertNewArticle" parameterType="java.util.Map">
+         <![CDATA[
+      
+     	 INSERT INTO T_BOARD(parentNO,articleNO,title,content,imageFileName,id)
+       
+         VALUES(#{parentNO},#{articleNO},#{title},#{content},#{imageFileName},#{id})
+        ]]> 
+      </insert>
+      
+      <select id="selectNewArticleNO" resultType="int">
+      <![CDATA[
+      
+      select max(articleNO)+1 from t_board
+        ]]> 
+      </select>
+ 
+          </mapper>
+       
+       

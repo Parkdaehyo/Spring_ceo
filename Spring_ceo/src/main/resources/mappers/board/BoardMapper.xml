@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+   <mapper namespace="com.spring.mvc.board.repository.IBoardMapper">
+   
+   
+   <resultMap id="BoardMap" type="com.spring.mvc.board.model.BoardVO">
+   
+   <id property="USER_NO" column="USER_NO"/>
+   <result property="KOR_NAME" column="KOR_NAME"/>
+   <result property="ENG_NAME" column="ENG_NAME"/>
+   <result property="HAN_NAME"  column="HAN_NAME"/>
+   <result property="JUMIN_NO" column="JUMIN_NO"/>
+   <result property="SAJIN_NM" column="SAJIN_NM"/>
+   <result property="BIRTH_YMD" column="BIRTH_YMD"/>
+   <result property="BIRTH_RN" column="BIRTH_RN"/>
+   <result property="SEX" column="SEX"/>
+   <result property="MARRY_YN" column="MARRY_YN"/>
+   <result property="WORK_YEAR" column="WORK_YEAR"/>
+   <result property="JOIN_ST" column="JOIN_ST"/>
+   <result property="HOPE_WORK" column="HOPE_WORK"/>
+   <result property="ADDR " column="ADDR"/>
+   <result property="TEL" column="TEL"/>
+   <result property="EMAIL" column="EMAIL"/>
+   <result property="TECH_GRD" column="TECH_GRD"/>
+   <result property="ALC_QT" column="TECH_GRD"/>
+  
+   
+   </resultMap>
+   
+   <insert id="insert">
+   
+   <![CDATA[
+   INSERT INTO IS_MATER(USER_NO,KOR_NAME,JUMIN_NO,SEX,TECH_GRD,JOIN_ST)
+   VALUES(#{USER_NO},#{KOR_NAME},#{JUMIN_NO},#{SEX},#{TECH_GRD},#{JOIN_ST})
+   
+   ]]>   
+   </insert>
+   
+   
+   <!--  전체 조회 한 값을 BoardMap이 받아서 이 메서드를 부른 곳으로 다시 리턴해준다. -->
+<select id="getArticleList" resultMap="BoardMap">
+<![CDATA[
+SELECT *
+FROM IS_MATER
+ORDER BY USER_NO DESC
+]]> 
+</select>
+ 
+<select id="getArticle" resultMap="BoardMap">
+<![CDATA[
+SELECT *
+FROM IS_MATER
+WHERE USER_NO=#{USER_NO}
+]]> 
+</select> 
+
+<select id="selectArticle" resultType="articleVO" parameterType="int">
+    <![CDATA[
+      SELECT * from t_board
+      where articleNO = #{articleNO}		
+    ]]>
+	</select>
+
+   
+   <delete id="delete">
+   <![CDATA[
+   DELETE FROM IS_MATER
+   WHERE KOR_NAME = #{KOR_NAME}
+   ]]> 
+   </delete>
+   
+    </mapper>
